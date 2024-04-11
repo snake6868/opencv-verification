@@ -6,8 +6,9 @@ import numpy as np
 def get_pos(image):
     # get pos ####################################################################################################
     print("start")
-    cv.imshow('cropped_image', image)
-    blurred = cv.GaussianBlur(image, (9, 9), 0)
+    # cv.imshow('original_image', image)
+    blurred = cv.GaussianBlur(image, (21, 21), 0)
+    # cv.imshow('Blurred Image', blurred)
     canny = cv.Canny(blurred, 50, 100)
     contours, hierarchy = cv.findContours(canny, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
     for i, contour in enumerate(contours):
@@ -24,13 +25,16 @@ def get_pos(image):
             continue
         x, y, w, h = cv.boundingRect(contour)  # 外接矩形
         print(w, h)
-        if 100 < w < 400 and h > 100:
+        if 110 < w < 150 and 110 < h < 150:
+        # if True:
             cv.rectangle(image, (x, y), (x + w, y + h), (0, 0, 255), 2)
             cv.imshow('result_image', image)
             print("end")
             print("边框的横坐标位置为：" + str(x))
             print("边框的宽度为：" + str(w))
+            print("边框的高度为：" + str(h))
             return x
+    cv.imshow('result_image', image)
     return 0
 
 
@@ -66,7 +70,7 @@ def resize_image(image, scale_percent):
 if __name__ == '__main__':
     # img0 = cv.imread('android_screenshot.jpg')
     # crop_image(img0)
-    img1 = cv.imread('./img/test_2.png')
+    img1 = cv.imread('./img/test_5.png')
     # scaled_image = resize_image(img1, 45)
     # img1 = cv.imread('./result_cropped.jpg')
     get_pos(img1)
